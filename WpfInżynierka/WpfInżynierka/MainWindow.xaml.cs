@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfInżynierka.DataGridClasses;
 
 namespace WpfInżynierka
@@ -25,6 +15,7 @@ namespace WpfInżynierka
 
         List<Groups> groupList;
         List<GroupParameters> parametersList;
+        Random rnd = new Random();
         public MainWindow()
         {
             InitializeComponent();
@@ -76,5 +67,79 @@ namespace WpfInżynierka
             
         }
 
+        private void buttonUsunZaznaczone_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = (Groups)GroupDataGrid.SelectedItem;
+            var selectedItem2 = (GroupParameters)ParametersDataGrid.SelectedItem;
+            if (selectedItem != null)
+            {
+                groupList.Remove(selectedItem);
+                GroupDataGrid.Items.Refresh();
+            }
+            if (selectedItem2 != null)
+            {
+                parametersList.Remove(selectedItem2);
+                ParametersDataGrid.Items.Refresh();
+            }
+        }
+
+        private void buttonGeneruj_Click(object sender, RoutedEventArgs e)
+        {
+            if (groupList.Count == 0)
+            {
+                MessageBox.Show("Add group first", "Nothing to show", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (parametersList.Count==0)
+            {
+                MessageBox.Show("Some parameters would be nice", "Nothing to report", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (fileNameTextBox.Text.Length==0)
+            {
+                MessageBox.Show("Name your file", "Nothing to do", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        try
+                        {
+                            int nrObiektu = 1;
+                            string obiektyGrupy = "";
+                            string obiektyParametry = "";
+
+                            foreach (var group in groupList)
+                            {
+                                for (int i = 0; i < group.groupSize; i++)
+                                {
+                                    obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.groupName + "\n";
+                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - ";
+                                    foreach (var prop in parametersList)
+                                    {
+                                        obiektyParametry += rnd.Next(0, prop.paramSize) + " , ";
+                                    }
+                                    obiektyParametry += "\n";
+                                    ++nrObiektu;
+                                }
+                            }
+                            string path = dialog.SelectedPath + fileNameTextBox.Text.ToString() + "Groups.txt";
+                            System.IO.File.WriteAllText(path, obiektyGrupy);
+                            path = dialog.SelectedPath + fileNameTextBox.Text.ToString() + "Objects.txt";
+                            System.IO.File.WriteAllText(path, obiektyParametry);
+                            MessageBox.Show("Pliki zostały utwożone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Pliki nie zostały utwożone błąd", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
