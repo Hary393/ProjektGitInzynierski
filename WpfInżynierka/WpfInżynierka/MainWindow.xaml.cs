@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WpfInżynierka.DataGridClasses;
 
@@ -19,7 +20,7 @@ namespace WpfInżynierka
         public MainWindow()
         {
             InitializeComponent();
-            groupList = new List<Groups>();
+            groupList = new List<Groups>();             //utworzenie listy grup i parametrów oraz ustawienie ich jako źródło odp datagridów
             GroupDataGrid.ItemsSource = groupList;
 
             parametersList = new List<GroupParameters>();
@@ -40,8 +41,6 @@ namespace WpfInżynierka
             {
                 MessageBox.Show("Fill up rquied fields", "No text", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
-
         }
 
         private void NumberValidation(object sender, TextCompositionEventArgs e) ///////////////////// Reagex so you can only use numbers in txt box
@@ -50,13 +49,31 @@ namespace WpfInżynierka
             e.Handled = regex.IsMatch(e.Text);
 
         }
+        private void ParametersDensityTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) ///////////////////// Reagex so you can only use numbers in txt box and number max is 100
+        {
+            Regex regex = new Regex("[^0-9]+");
+            if (!regex.IsMatch(e.Text))
+            {
+                if (Int32.Parse(((TextBox)sender).Text + e.Text) > 100)
+                {
+                    ParametersDensityTextBox.Text = "100";
+                }
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
 
         private void buttonDodajParametr_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 GroupParameters nextParameter = new GroupParameters(ParametersNameTxtBox.Text.ToString(),
-                                           Int32.Parse(ParametersSizeTextBox.Text.ToString()));
+                                           Int32.Parse(ParametersSizeTextBox.Text.ToString()),
+                                           Int32.Parse(ParametersDensityTextBox.Text.ToString()));
                 parametersList.Add(nextParameter);
                 ParametersDataGrid.Items.Refresh();
             }
@@ -109,31 +126,41 @@ namespace WpfInżynierka
                             int nrObiektu = 1;
                             string obiektyGrupy = "";
                             string obiektyParametry = "";
+                            int gestoscXparam;
 
-                            foreach (var group in groupList)
+                            foreach (var group in groupList)                //Tworzenie obiektu i przypisanie do grupy
                             {
                                 for (int i = 0; i < group.groupSize; i++)
                                 {
                                     obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.groupName + "\n";
-                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - ";
+                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
                                     foreach (var prop in parametersList)
                                     {
-                                        obiektyParametry += rnd.Next(0, prop.paramSize) + " , ";
+                                        gestoscXparam = rnd.Next(0, 100);
+                                        if (gestoscXparam<=prop.paramDensity)               //Paramety o podanej gęstosci zasięgu
+                                        {
+                                            obiektyParametry += rnd.Next(0, prop.paramSize) + " , "; //Paramety o podanym zasięgu
+                                        }
+                                        else
+                                        {
+                                            obiektyParametry += "0" + " , ";
+                                        }
                                     }
+                                    obiektyParametry = obiektyParametry.TrimEnd(',');
                                     obiektyParametry += "\n";
                                     ++nrObiektu;
                                 }
                             }
-                            string path = dialog.SelectedPath + fileNameTextBox.Text.ToString() + "Groups.txt";
+                            string path = dialog.SelectedPath +"\\\\"+ fileNameTextBox.Text.ToString() + "Groups.txt";
                             System.IO.File.WriteAllText(path, obiektyGrupy);
-                            path = dialog.SelectedPath + fileNameTextBox.Text.ToString() + "Objects.txt";
+                            path = dialog.SelectedPath + "\\\\" + fileNameTextBox.Text.ToString() + "Objects.txt";
                             System.IO.File.WriteAllText(path, obiektyParametry);
-                            MessageBox.Show("Pliki zostały utwożone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Pliki zostały utworzone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
 
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("Pliki nie zostały utwożone błąd", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show("Pliki nie zostały utworzone błąd", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                             throw;
                         }

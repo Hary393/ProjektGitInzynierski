@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfInżynierka"
         mc:Ignorable="d"
-        Title="MainWindow" Height="377.333" Width="525">
+        Title="DataGenerator" Height="409.633" Width="525">
     <Grid>
         <DataGrid x:Name="GroupDataGrid" Margin="20,31,0,0" HorizontalAlignment="Left" Width="166" Height="147" VerticalAlignment="Top"/>
 
@@ -21,7 +21,7 @@
                 <TextBox x:Name="GroupSizeTextBox" VerticalAlignment="Center" DockPanel.Dock="Right" PreviewTextInput="NumberValidation" MaxLength="5"></TextBox>
             </DockPanel>
         </Grid>
-        <Button x:Name="buttonDodajGrupe" Content="Dodaj Grupę" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="20,256,0,0" Click="buttonDodajGrupe_Click"/>
+        <Button x:Name="buttonDodajGrupe" Content="Dodaj Grupę" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="20,290,0,0" Click="buttonDodajGrupe_Click"/>
 
         <DataGrid x:Name="ParametersDataGrid" HorizontalAlignment="Left" Margin="241,31,0,0" Width="240" Height="147" VerticalAlignment="Top"/>
 
@@ -31,16 +31,22 @@
                 <TextBox x:Name="ParametersNameTxtBox" VerticalAlignment="Center" DockPanel.Dock="Right" MaxLength="42"></TextBox>
             </DockPanel>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="26" Margin="312,220,0,0" VerticalAlignment="Top" Width="166">
+        <Grid HorizontalAlignment="Left" Height="26" Margin="315,224,0,0" VerticalAlignment="Top" Width="166">
             <DockPanel Grid.Column="2" Grid.Row="2">
-                <Label Content="Rozmiar Parametru:" DockPanel.Dock="Left"></Label>
-                <TextBox x:Name="ParametersSizeTextBox" VerticalAlignment="Center" DockPanel.Dock="Right" PreviewTextInput="NumberValidation" MaxLength="5"></TextBox>
+                <Label Content="Rozmiar Parametru:" DockPanel.Dock="Left" Width="108"></Label>
+                <TextBox x:Name="ParametersSizeTextBox" VerticalAlignment="Center" DockPanel.Dock="Right" PreviewTextInput="NumberValidation" MaxLength="5" Margin="0,4" Width="54"></TextBox>
             </DockPanel>
         </Grid>
-        <Button x:Name="buttonDodajParametr" Content="Dodaj Parametr" HorizontalAlignment="Left" Margin="378,261,0,0" VerticalAlignment="Top" Width="100" Click="buttonDodajParametr_Click"/>
-        <Button x:Name="buttonGeneruj" Content="GENERUJ!" HorizontalAlignment="Left" Margin="204,261,0,0" VerticalAlignment="Top" Width="75" Click="buttonGeneruj_Click"/>
-        <Button x:Name="buttonUsunZaznaczone" Content="Usuń Zaznaczone" HorizontalAlignment="Left" Margin="189,289,0,0" VerticalAlignment="Top" Width="103" Click="buttonUsunZaznaczone_Click"/>
-        <Grid HorizontalAlignment="Left" Height="26" Margin="20,310,0,0" VerticalAlignment="Top" Width="272">
+        <Grid HorizontalAlignment="Left" Height="26" Margin="284,252,0,0" VerticalAlignment="Top" Width="196">
+            <DockPanel Grid.Column="2" Grid.Row="2">
+                <Label Content="Gęstość Parametru w %" DockPanel.Dock="Left" Width="138"></Label>
+                <TextBox x:Name="ParametersDensityTextBox" VerticalAlignment="Center" DockPanel.Dock="Right"  PreviewTextInput="ParametersDensityTextBox_PreviewTextInput" MaxLength="3" Margin="0,4" Width="51"></TextBox>
+            </DockPanel>
+        </Grid>
+        <Button x:Name="buttonDodajParametr" Content="Dodaj Parametr" HorizontalAlignment="Left" Margin="381,290,0,0" VerticalAlignment="Top" Width="100" Click="buttonDodajParametr_Click"/>
+        <Button x:Name="buttonGeneruj" Content="GENERUJ!" HorizontalAlignment="Left" Margin="192,347,0,0" VerticalAlignment="Top" Width="75" Click="buttonGeneruj_Click"/>
+        <Button x:Name="buttonUsunZaznaczone" Content="Usuń Zaznaczone" HorizontalAlignment="Left" Margin="192,290,0,0" VerticalAlignment="Top" Width="103" Click="buttonUsunZaznaczone_Click"/>
+        <Grid HorizontalAlignment="Left" Height="26" Margin="11,316,0,0" VerticalAlignment="Top" Width="272">
             <DockPanel Grid.Column="2" Grid.Row="2">
                 <Label Content="Nazwa Pliku Wyjsciowego" DockPanel.Dock="Left"></Label>
                 <TextBox x:Name="fileNameTextBox" VerticalAlignment="Center" DockPanel.Dock="Right" MaxLength="42"></TextBox>

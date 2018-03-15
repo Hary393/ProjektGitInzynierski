@@ -12,10 +12,13 @@ namespace WpfInżynierka.DataGridClasses
 
         public int paramSize { get; set; }
 
-        public GroupParameters(string name, int size)
+        public int paramDensity { get; set; }
+
+        public GroupParameters(string name, int size, int density)
         {
             paramName = name;
-           paramSize = size;
+            paramSize = size;
+            paramDensity = density;
         }
     }
 }
