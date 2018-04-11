@@ -116,57 +116,63 @@ namespace WpfInżynierka
             }
             else
             {
-                using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                generateData();
+            }
+        }
+
+        void generateData()
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                    if (result == System.Windows.Forms.DialogResult.OK)
+                    try
                     {
-                        try
-                        {
-                            int nrObiektu = 1;
-                            string obiektyGrupy = "";
-                            string obiektyParametry = "";
-                            int gestoscXparam;
+                        int nrObiektu = 1;
+                        string obiektyGrupy = "";
+                        string obiektyParametry = "";
+                        int gestoscXparam;
 
-                            foreach (var group in groupList)                //Tworzenie obiektu i przypisanie do grupy
+                        foreach (var group in groupList)                //Tworzenie obiektu i przypisanie do grupy
+                        {
+                            for (int i = 0; i < group.groupSize; i++)
                             {
-                                for (int i = 0; i < group.groupSize; i++)
+                                obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.groupName + "\n";
+                                obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
+                                foreach (var prop in parametersList)
                                 {
-                                    obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.groupName + "\n";
-                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
-                                    foreach (var prop in parametersList)
+                                    gestoscXparam = rnd.Next(0, 100);
+                                    if (gestoscXparam <= prop.paramDensity)               //Paramety o podanej gęstosci zasięgu
                                     {
-                                        gestoscXparam = rnd.Next(0, 100);
-                                        if (gestoscXparam<=prop.paramDensity)               //Paramety o podanej gęstosci zasięgu
-                                        {
-                                            obiektyParametry += rnd.Next(0, prop.paramSize) + " , "; //Paramety o podanym zasięgu
-                                        }
-                                        else
-                                        {
-                                            obiektyParametry += "0" + " , ";
-                                        }
+                                        obiektyParametry += rnd.Next(0, prop.paramSize) + " , "; //Paramety o podanym zasięgu
                                     }
-                                    obiektyParametry = obiektyParametry.TrimEnd(',');
-                                    obiektyParametry += "\n";
-                                    ++nrObiektu;
+                                    else
+                                    {
+                                        obiektyParametry += "0" + " ,";
+                                    }
                                 }
+                                obiektyParametry = obiektyParametry.TrimEnd(',');
+                                obiektyParametry += "\n";
+                                ++nrObiektu;
                             }
-                            string path = dialog.SelectedPath +"\\\\"+ fileNameTextBox.Text.ToString() + "Groups.txt";
-                            System.IO.File.WriteAllText(path, obiektyGrupy);
-                            path = dialog.SelectedPath + "\\\\" + fileNameTextBox.Text.ToString() + "Objects.txt";
-                            System.IO.File.WriteAllText(path, obiektyParametry);
-                            MessageBox.Show("Pliki zostały utworzone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
-
                         }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("Pliki nie zostały utworzone błąd", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        string path = dialog.SelectedPath + "\\\\" + fileNameTextBox.Text.ToString() + "Groups.txt";
+                        System.IO.File.WriteAllText(path, obiektyGrupy);
+                        path = dialog.SelectedPath + "\\\\" + fileNameTextBox.Text.ToString() + "Objects.txt";
+                        System.IO.File.WriteAllText(path, obiektyParametry);
+                        MessageBox.Show("Pliki zostały utworzone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                            throw;
-                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Pliki nie zostały utworzone błąd", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                        throw;
                     }
                 }
             }
-        }
+            
+        }///GenerateData
     }
 }
