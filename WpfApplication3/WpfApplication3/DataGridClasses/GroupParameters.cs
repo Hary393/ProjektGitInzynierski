@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfInżynierka.DataGridClasses
 {
-    class GroupParameters
+    public class GroupParameters
     {
         public string paramName { get; set; }
 
