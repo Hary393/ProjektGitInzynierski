@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WpfApplication3.ViewModels;
 using WpfInżynierka.DataGridClasses;
 
+
 namespace WpfApplication3
 {
     /// <summary>
@@ -122,11 +123,35 @@ namespace WpfApplication3
             {
                 MessageBox.Show("Name your file", "Nothing to do", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+            else if (caltulateDataSize())
+            {
+                MessageBox.Show("To much objects to create because of insuficient numbers of parameters", "Nothing to do", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             else
             {
                 generateData();
             }
         }
+
+
+        bool caltulateDataSize()
+        {
+            int groupSize = 0;
+            int paramSize = 0;
+            foreach (var group in groupList)
+            {
+                groupSize += group.groupSize;
+            }
+            foreach (var param in parametersList)
+            {
+                paramSize += param.paramSize;
+            }
+
+            if (groupSize <= Math.Pow(paramSize, 2))
+                return false;
+            return true;
+        }
+
 
         void generateData()
         {
@@ -146,34 +171,52 @@ namespace WpfApplication3
                             int nrObiektu = 1;
                             string obiektyGrupy = "";
                             string obiektyParametry = "";
+                            string newObject = "";
+                            HashSet<string> uniqueObiekty = new HashSet<string>();
                             int gestoscXparam;
                             int groupnr = 0;
+                            bool notunique = true;
                             foreach (var group in GeneratingData.Rows)                //Tworzenie obiektu i przypisanie do grupy
                             {
                                 for (int i = 0; i < groupList[groupnr].groupSize; i++)
                                 {
                                     obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.Name + Environment.NewLine;
                                     obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
-                                    foreach (var prop in group.Columns)
-                                    {
-                                        gestoscXparam = rnd.Next(0, 100);
-                                        int value=0;
-                                        if (Int32.TryParse(prop.EditableValue, out value))
+
+                                    notunique = true;
+                                    while (notunique){
+
+                                        newObject = "";
+                                        foreach (var prop in group.Columns)
                                         {
-                                            if (gestoscXparam <= value)               //Paramety o podanej gęstosci zasięgu 0-100 
-                                            {///////////////////////////tutaj to ogólnie trzeba random dyskretny wjebac gdzie 100 to zawsze 0 to nigdy bo teraz to mi nie wychodzi i brane z Parametru
-                                                obiektyParametry += "1" + " ,";
+                                            gestoscXparam = rnd.Next(0, 100);
+                                            int value = 0;
+                                            if (Int32.TryParse(prop.EditableValue, out value))
+                                            {
+                                                if (gestoscXparam <= value)               //Paramety o podanej gęstosci zasięgu 0-100 
+                                                {///////////////////////////tutaj to ogólnie trzeba random dyskretny wjebac gdzie 100 to zawsze 0 to nigdy bo teraz to mi nie wychodzi i brane z Parametru
+                                                    newObject += "1" + " ,";
+                                                }
+                                                else
+                                                {
+                                                    newObject += "0" + " ,";
+                                                }
                                             }
                                             else
                                             {
-                                                obiektyParametry += "0" + " ,";
+                                                newObject += rnd.Next(0, 2) + " , "; //jak nie ma gęstości to poprostu random
                                             }
                                         }
-                                        else
+
+                                        if (uniqueObiekty.Add(newObject))
                                         {
-                                            obiektyParametry += rnd.Next(0, 2) + " , "; //jak nie ma gęstości to poprostu random
+                                            notunique = false;
+                                            obiektyParametry += newObject;
                                         }
-                                    }
+
+                                    }//while not unique
+
+
                                     obiektyParametry = obiektyParametry.TrimEnd(',');
                                     obiektyParametry += Environment.NewLine;
                                     ++nrObiektu;
