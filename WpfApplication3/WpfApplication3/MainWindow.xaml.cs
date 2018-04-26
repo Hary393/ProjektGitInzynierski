@@ -176,16 +176,21 @@ namespace WpfApplication3
                             int gestoscXparam;
                             int groupnr = 0;
                             bool notunique = true;
+                            List<int> groupPassList = new List<int>();
+                            List<List<double>> paramPassList = new List<List<double>>();
+                            
+
+
                             foreach (var group in GeneratingData.Rows)                //Tworzenie obiektu i przypisanie do grupy
                             {
                                 for (int i = 0; i < groupList[groupnr].groupSize; i++)
                                 {
                                     obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.Name + Environment.NewLine;
                                     obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
-
+                                    groupPassList.Add(groupnr);
                                     notunique = true;
                                     while (notunique){
-
+                                        List<double> nextPassList = new List<double>();
                                         newObject = "";
                                         foreach (var prop in group.Columns)
                                         {
@@ -196,15 +201,19 @@ namespace WpfApplication3
                                                 if (gestoscXparam <= value)               //Paramety o podanej gęstosci zasięgu 0-100 
                                                 {///////////////////////////tutaj to ogólnie trzeba random dyskretny wjebac gdzie 100 to zawsze 0 to nigdy bo teraz to mi nie wychodzi i brane z Parametru
                                                     newObject += "1" + " ,";
+                                                    nextPassList.Add(1);
                                                 }
                                                 else
                                                 {
                                                     newObject += "0" + " ,";
+                                                    nextPassList.Add(0);
                                                 }
                                             }
                                             else
                                             {
-                                                newObject += rnd.Next(0, 2) + " , "; //jak nie ma gęstości to poprostu random
+                                                int valueRnd = rnd.Next(0, 2) ;
+                                                newObject += valueRnd.ToString() + " , ";//jak nie ma gęstości to poprostu random
+                                                nextPassList.Add(valueRnd);
                                             }
                                         }
 
@@ -212,6 +221,7 @@ namespace WpfApplication3
                                         {
                                             notunique = false;
                                             obiektyParametry += newObject;
+                                            paramPassList.Add(nextPassList);
                                         }
 
                                     }//while not unique
@@ -258,6 +268,8 @@ namespace WpfApplication3
                             path = dialog.SelectedPath + "\\\\" + fileNameTextBox.Text.ToString() + "Objects.txt";
                             System.IO.File.WriteAllText(path, obiektyParametry);
                             MessageBox.Show("Pliki zostały utworzone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
+                            ValidationWindow validate = new ValidationWindow(groupPassList, paramPassList);
+                            validate.Show();
 
                         }
                         catch (Exception)
@@ -271,7 +283,7 @@ namespace WpfApplication3
             }//resultWindowDialog
             else
             {
-                MessageBox.Show("JakiśBłąd w drugim oknie", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Jakiś Błąd w drugim oknie", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }///GenerateData
     }

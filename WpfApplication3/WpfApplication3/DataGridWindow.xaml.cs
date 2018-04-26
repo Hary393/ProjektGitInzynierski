@@ -18,18 +18,18 @@
             var dataViewModel = new DataViewModel();
             this.DataContext = dataViewModel;
 
-            var ParamsToAdd = new ObservableCollection<IColumn>();
-            foreach (var item in parametersList)
-            {
-                for (int i = 1; i < item.paramSize+1; i++)
-                {
-                    ParamsToAdd.Add(new PropertyGrid { ParamName = item.paramName+i, ParamValue = item.paramDensity.ToString() });
-                }                
-            }
-
+            
             var Groups = new ObservableCollection<IRow>();
             foreach (var gitem in groupList)
             {
+                var ParamsToAdd = new ObservableCollection<IColumn>();
+                foreach (var item in parametersList)
+                {
+                    for (int i = 1; i < item.paramSize + 1; i++)
+                    {
+                        ParamsToAdd.Add(new PropertyGrid { ParamName = item.paramName + i, ParamValue = item.paramDensity.ToString() });
+                    }
+                }
                 Groups.Add(new GroupGrid
                 {
                     Name = gitem.groupName,

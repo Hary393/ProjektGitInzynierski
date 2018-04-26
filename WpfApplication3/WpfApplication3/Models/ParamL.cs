@@ -39,7 +39,6 @@
             set { this.ParamValue = value; }
         }
 
-        public int Size { get; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
