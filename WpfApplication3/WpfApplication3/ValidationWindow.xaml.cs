@@ -44,7 +44,7 @@ namespace WpfApplication3
             multilabelSVM();
             nativeBayesValidation();
             MessageBox.Show(message, "wynik walidacji", MessageBoxButton.OK);
-            this.Close();
+            this.Visibility = System.Windows.Visibility.Hidden;
         }
 
         public void knnValidation()
@@ -72,7 +72,7 @@ namespace WpfApplication3
             message += "Knn Validacja\n";
             message += "trainingError " + trainingError.ToString() + "\n";
             message += "validationError " + validationError.ToString() + "\n";
-            message += "accuracy " + accuracy.ToString() + "\n";
+            message += "accuracy " + accuracy.ToString() + "\n\n";
 
         }
 
@@ -108,7 +108,7 @@ namespace WpfApplication3
             message += "Native Bayes Validacja\n";
             message += "trainingError " + trainingError.ToString() + "\n";
             message += "validationError " + validationError.ToString() + "\n";
-            message += "accuracy " + accuracy.ToString() + "\n";
+            message += "accuracy " + accuracy.ToString() + "\n\n";
         }
 
         public void multilabelSVM()
@@ -166,7 +166,7 @@ namespace WpfApplication3
             double loss = new CategoryCrossEntropyLoss(outputs).Loss(prob);
             message += "SVM Validacja\n";
             message += "error " + error.ToString() + "\n";
-            message += "loss " + loss.ToString() + "\n";
+            message += "loss " + loss.ToString() + "\n\n";
         }
 
     }

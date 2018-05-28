@@ -186,7 +186,7 @@ namespace WpfApplication3
                                 for (int i = 0; i < groupList[groupnr].groupSize; i++)
                                 {
                                     obiektyGrupy += "Obiekt" + nrObiektu.ToString() + " - " + group.Name + Environment.NewLine;
-                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "; //Tworzenie parametrów i przypisanie do obiektu
+                                    obiektyParametry += "Obiekt" + nrObiektu.ToString() + " - "+ group.Name+","; //Tworzenie parametrów i przypisanie do obiektu
                                     groupPassList.Add(groupnr);
                                     notunique = true;
                                     while (notunique){
@@ -200,19 +200,19 @@ namespace WpfApplication3
                                             {
                                                 if (gestoscXparam <= value)               //Paramety o podanej gęstosci zasięgu 0-100 
                                                 {///////////////////////////tutaj to ogólnie trzeba random dyskretny wjebac gdzie 100 to zawsze 0 to nigdy bo teraz to mi nie wychodzi i brane z Parametru
-                                                    newObject += "1" + " ,";
+                                                    newObject += "1" + ",";
                                                     nextPassList.Add(1);
                                                 }
                                                 else
                                                 {
-                                                    newObject += "0" + " ,";
+                                                    newObject += "0" + ",";
                                                     nextPassList.Add(0);
                                                 }
                                             }
                                             else
                                             {
                                                 int valueRnd = rnd.Next(0, 2) ;
-                                                newObject += valueRnd.ToString() + " , ";//jak nie ma gęstości to poprostu random
+                                                newObject += valueRnd.ToString() + ",";//jak nie ma gęstości to poprostu random
                                                 nextPassList.Add(valueRnd);
                                             }
                                         }
@@ -270,6 +270,7 @@ namespace WpfApplication3
                             MessageBox.Show("Pliki zostały utworzone", "Nothing to acknowledge", MessageBoxButton.OK, MessageBoxImage.Information);
                             ValidationWindow validate = new ValidationWindow(groupPassList, paramPassList);
                             validate.Show();
+                            validate.Close();
 
                         }
                         catch (Exception)
@@ -285,6 +286,13 @@ namespace WpfApplication3
             {
                 MessageBox.Show("Jakiś Błąd w drugim oknie", "Nothing to work properly", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }///GenerateData
+        }        ///GenerateData
+
+        private void readFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReadFromFile FileReadWindow = new ReadFromFile();
+            FileReadWindow.Show();
+        }
+
     }
 }

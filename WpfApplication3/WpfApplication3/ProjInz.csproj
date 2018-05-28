@@ -93,6 +93,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ReadFromFile.xaml.cs">
+      <DependentUpon>ReadFromFile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidationWindow.xaml.cs">
       <DependentUpon>ValidationWindow.xaml</DependentUpon>
     </Compile>
@@ -105,6 +108,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReadFromFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
