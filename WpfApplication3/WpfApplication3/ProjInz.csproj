@@ -83,8 +83,8 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\NullColumn.cs" />
-    <Compile Include="Models\ParamL.cs" />
+    <Compile Include="ViewModels\Models\NullColumn.cs" />
+    <Compile Include="ViewModels\Models\ParamL.cs" />
     <Page Include="DataGridWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,9 +100,9 @@
       <DependentUpon>ValidationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DataViewModel.cs" />
-    <Compile Include="Models\IColumn.cs" />
+    <Compile Include="ViewModels\Models\IColumn.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Models\IRow.cs" />
+    <Compile Include="ViewModels\Models\IRow.cs" />
     <Compile Include="DataGridWindow.xaml.cs">
       <DependentUpon>DataGridWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -121,7 +121,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\GroupL.cs" />
+    <Compile Include="ViewModels\Models\GroupL.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

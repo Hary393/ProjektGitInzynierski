@@ -114,6 +114,7 @@ namespace WpfApplication3
                 }
                 
             }
+            objNumber++;
             int[] outputs;
             outputs = groupClasses.ToArray();
             // We learn the algorithm:
@@ -124,6 +125,11 @@ namespace WpfApplication3
             double error = cm.Error;  // should be 
             double acc = cm.Accuracy; // should be 
             double kappa = cm.Kappa;  // should be
+
+
+            List<int> testOutputsList = new List<int>();
+            List<double[]> testInputsList = new List<double[]>();
+
 
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
@@ -144,6 +150,7 @@ namespace WpfApplication3
                                     next.Add(rnd.Next(2));
                                 }
                                 double[] paramValues = next.ToArray();
+                                
                                 double scoreValue = knn.Score(paramValues, classesDict[item.groupName]);
                                 if ((scoreValue*100)>item.groupScore)
                                 {
@@ -153,7 +160,12 @@ namespace WpfApplication3
                                     {
                                         resultsToWrite += para.ToString() + ",";
                                     }
-                                    resultsToWrite+=Environment.NewLine;
+                                    resultsToWrite = resultsToWrite.TrimEnd(',');
+                                    resultsToWrite +=Environment.NewLine;
+
+                                    testInputsList.Add(paramValues);   //////add to test inputs
+                                    testOutputsList.Add(classesDict[item.groupName]); ///////and outputs
+
                                     break;
                                 }
 
@@ -162,6 +174,75 @@ namespace WpfApplication3
                         }
 
                     }
+                    var knntest = new KNearestNeighbors(k: 4);
+                    knntest.Learn(testInputsList.ToArray(), testOutputsList.ToArray());
+                    var cmtest = GeneralConfusionMatrix.Estimate(knntest, testInputsList.ToArray(), testOutputsList.ToArray());
+                    // We can use it to estimate measures such as 
+                    double errortest = cmtest.Error;  // should be 
+                    double acctest = cmtest.Accuracy; // should be 
+                    double kappatest = cmtest.Kappa;  // should be
+
+
+                    int percent70 = (int)(outputs.Length * 0.7);
+                    int percent30 = outputs.Length - percent70;
+
+                    int[] randompicks70 = new int[percent70];
+                    int[] randompicks30 = new int[percent30];
+
+                    int random;
+                    for (int i = 0; i < percent70; i++)
+                    {
+                        do
+                        {
+                            random = rnd.Next(outputs.Length);
+
+                        } while (randompicks70.Contains(random));
+                        randompicks70[i] = random;
+                    }
+                    int random30counter = 0;
+                    for (int i = 0; i < outputs.Length; i++)
+                    {
+                        if (!randompicks70.Contains(i))
+                        {
+                            randompicks30[random30counter] = i;
+                            random30counter++;
+                        }
+                    }
+
+                    int[] outputs70 = new int[percent70];
+                    int[] outputs30 = new int[percent30];
+                    double[][] inputs70 = new double[percent70][];
+                    double[][] inputs30 = new double[percent30][];
+
+                    for (int i = 0; i < percent70; i++)
+                    {
+                        inputs70[i] = inputs[randompicks70[i]];
+                        outputs70[i] = outputs[randompicks70[i]];
+                    }
+                    for (int i = 0; i < percent30; i++)
+                    {
+                        inputs30[i] = inputs[randompicks30[i]];
+                        outputs30[i] = outputs[randompicks30[i]];
+                    }
+                    var knn70percent = new KNearestNeighbors(k: 4);
+                    knn70percent.Learn(inputs70, outputs70);
+                    var cm70percent = GeneralConfusionMatrix.Estimate(knn70percent, inputs70, outputs70);
+                    // We can use it to estimate measures such as 
+                    double error70percent = cm70percent.Error;  // should be 
+                    double acc70percent = cm70percent.Accuracy; // should be 
+                    double kappa70percent = cm70percent.Kappa;  // should be
+
+
+
+                    double score70 = 0;
+                    double scoretest=0;
+                    for (int i = 0; i < inputs30.Length; i++)
+                    {
+                        score70 += knn70percent.Score(inputs30[i], outputs30[i]);
+                        scoretest += knntest.Score(inputs30[i], outputs30[i]);
+                    }
+                    score70 = score70 / inputs30.Length;
+                    scoretest = scoretest / inputs30.Length;
 
                     try
                     {
