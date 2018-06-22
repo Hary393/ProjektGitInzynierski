@@ -1,0 +1,24 @@
+﻿<Window x:Class="WpfApplication3.ReadFromFileValidation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication3"
+        mc:Ignorable="d"
+        Title="ReadFromFileValidation" Height="313" Width="588">
+    <Grid>
+        <Label x:Name="OrginalData" Content="Orginal Data" HorizontalAlignment="Left" Margin="68,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TestData" Content="Test Data" HorizontalAlignment="Left" Margin="233,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="SplitData" Content="Split Data" HorizontalAlignment="Left" Margin="398,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="OrginalError" Content="Label" HorizontalAlignment="Left" Margin="68,90,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="OrginalAcc" Content="Label" HorizontalAlignment="Left" Margin="68,140,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TestError" Content="Label" HorizontalAlignment="Left" Margin="233,90,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TestAcc" Content="Label" HorizontalAlignment="Left" Margin="233,140,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TestScore" Content="Label" HorizontalAlignment="Left" Margin="233,198,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="SplitError" Content="Label" HorizontalAlignment="Left" Margin="398,90,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="SplitAcc" Content="Label" HorizontalAlignment="Left" Margin="398,140,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="SplitScore" Content="Label" HorizontalAlignment="Left" Margin="398,198,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonExit" Content="Exit" HorizontalAlignment="Left" Margin="462,236,0,0" VerticalAlignment="Top" Width="75"/>
+
+    </Grid>
+</Window>

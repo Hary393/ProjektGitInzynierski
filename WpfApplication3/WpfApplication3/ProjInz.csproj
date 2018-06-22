@@ -83,6 +83,9 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReadFromFileValidation.xaml.cs">
+      <DependentUpon>ReadFromFileValidation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Models\NullColumn.cs" />
     <Compile Include="ViewModels\Models\ParamL.cs" />
     <Page Include="DataGridWindow.xaml">
@@ -112,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReadFromFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReadFromFileValidation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

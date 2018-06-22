@@ -238,12 +238,16 @@ namespace WpfApplication3
                     double scoretest=0;
                     for (int i = 0; i < inputs30.Length; i++)
                     {
-                        score70 += knn70percent.Score(inputs30[i], outputs30[i]);
-                        scoretest += knntest.Score(inputs30[i], outputs30[i]);
+
+                        var testvalue1= knn70percent.Score(inputs30[i], outputs30[i]);
+                        var testvalue2=knntest.Score(inputs30[i], outputs30[i]);
+                        score70 += testvalue1;
+                        scoretest += testvalue2;
                     }
                     score70 = score70 / inputs30.Length;
                     scoretest = scoretest / inputs30.Length;
-
+                    ReadFromFileValidation validateWindow = new ReadFromFileValidation(cm, cmtest, cm70percent, score70, scoretest);
+                    validateWindow.Show();
                     try
                     {
                         string path = dialog.SelectedPath + "\\\\" + "ExtendedExamples.txt";
